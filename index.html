@@ -1,10 +1,132 @@
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-    <title>EcoCart - Sustainable Products</title>
-    <link rel= 'stylesheet' href='index.css'/> 
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EcoCart with Shopping Cart</title>
+  <style>
+    :root {
+      --bg: #f0f8f5;
+      --card-bg: #fff;
+      --text: #333;
+      --header: #2e7d32;
+      --footer: #e0f2f1;
+      --accent: #66bb6a;
+    }
+    body.dark {
+      --bg: #1b1f1c;
+      --card-bg: #2e2e2e;
+      --text: #e0e0e0;
+      --header: #1b5e20;
+      --footer: #2c3e3c;
+      --accent: #81c784;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+    }
+    header {
+      background-color: var(--header);
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+      position: relative;
+    }
+    .cart-icon {
+      position: absolute;
+      top: 1rem;
+      right: 6rem;
+      background: white;
+      color: var(--header);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+    .cart-count {
+      font-weight: bold;
+      margin-left: 0.5rem;
+    }
+    .container {
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+    .product-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .product-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .product-info {
+      padding: 1rem;
+    }
+    .product-info h3 {
+      margin-top: 0;
+      color: var(--header);
+    }
+    .product-info p {
+      font-size: 0.95rem;
+    }
+    .product-info button {
+      margin-top: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .cart-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+    }
+    .cart-modal-content {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 10px;
+      width: 400px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    .cart-item span {
+      flex: 1;
+    }
+    .cart-item button {
+      background: red;
+      color: white;
+      border: none;
+      padding: 0.3rem 0.6rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: var(--footer);
+    }
+  </style>
 </head>
 <body>
-      <header>
+  <header>
     <h1>EcoCart</h1>
     <p>Sustainable Products</p>
     <div class="cart-icon" onclick="toggleCart()">🛒 Cart<span class="cart-count">(0)</span></div>
@@ -24,11 +146,12 @@
   </footer>
   <script>
     const products = [
-      { id: 1, name: "Reusable Cotton Bag", desc: "Organic cotton shopping bag.", image: "images/cottonbag.jpg" },
-      { id: 2, name: "Bamboo Toothbrush", desc: "Biodegradable bamboo toothbrush.", image: "images/toothbrush.jpg" },
-      { id: 3, name: "Coconut Bowl", desc: "Handcrafted coconut bowl.", image: "images/bowl.jpg" },
-      { id: 4, name: "Eco Toys", desc: "Wooden toys for kids.", image: "images/toy.jpg" },
-      { id: 5, name: "Jute Pouch", desc: "Eco-friendly jute pouches.", image: "images/jutepouch.jpg" }
+      { id: 1, name: "Reusable Cotton Bag", desc: "Organic cotton shopping bag.", image: "https://via.placeholder.com/300x200?text=Bag" },
+      { id: 2, name: "Bamboo Toothbrush", desc: "Biodegradable bamboo toothbrush.", image: "https://via.placeholder.com/300x200?text=Toothbrush" },
+      { id: 3, name: "Coconut Bowl", desc: "Handcrafted coconut bowl.", image: "https://via.placeholder.com/300x200?text=Bowl" },
+      { id: 4, name: "Eco Toys", desc: "Wooden toys for kids.", image: "https://via.placeholder.com/300x200?text=Toys" },
+      { id: 5, name: "Jute Pouch", desc: "Eco-friendly jute pouches.", image: "https://via.placeholder.com/300x200?text=Jute" },
+      { id: 6, name: "Beeswax Wrap", desc: "Reusable beeswax food wrap.", image: "https://via.placeholder.com/300x200?text=Wrap" }
     ];let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 function renderProducts() {
