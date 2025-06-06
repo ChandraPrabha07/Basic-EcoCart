@@ -1,156 +1,83 @@
 <html lang="en">
 <head>
     <title>EcoCart - Sustainable Products</title>
-    <style>
-        :root {
-          --bg: #f0f8f5;
-          --card-bg: #fff;
-          --text: #333;
-          --header: #2e7d32;
-          --footer: #e0f2f1;
-          --accent: #66bb6a;
-        }
-    
-        body.dark {
-          --bg: #1b1f1c;
-          --card-bg: #2e2e2e;
-          --text: #e0e0e0;
-          --header: #1b5e20;
-          --footer: #2c3e3c;
-          --accent: #81c784;
-        }
-    
-        body {
-          font-family: 'Segoe UI', sans-serif;
-          margin: 0;
-          padding: 0;
-          background-color: var(--bg);
-          color: var(--text);
-          transition: background 0.3s, color 0.3s;
-        }
-    
-        header {
-          background-color: var(--header);
-          color: white;
-          padding: 1.5rem;
-          text-align: center;
-          position: relative;
-        }
-    
-        .container {
-          padding: 2rem;
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 2rem;
-        }
-    
-        .product-card {
-          background: var(--card-bg);
-          border-radius: 10px;
-          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-          overflow: hidden;
-          transition: transform 0.2s ease, background 0.3s;
-        }
-    
-        .product-card:hover {
-          transform: translateY(-5px);
-        }
-    
-        .product-card img {
-          width: 100%;
-          height: 200px;
-          object-fit: cover;
-        }
-    
-        .product-info {
-          padding: 1rem;
-        }
-    
-        .product-info h3 {
-          margin-top: 0;
-          color: var(--header);
-        }
-    
-        .product-info p {
-          font-size: 0.95rem;
-        }
-    
-        .product-info button {
-          margin-top: 0.5rem;
-          padding: 0.5rem 1rem;
-          background: var(--accent);
-          color: white;
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-        }
-    
-        .product-info button:hover {
-          background: #4caf50;
-        }
-    
-        footer {
-          text-align: center;
-          padding: 1rem;
-          background: var(--footer);
-          color: var(--text);
-        }
-      </style>
+    <link rel= 'stylesheet' href='index.css' type='text' /> 
 </head>
 <body>
-    <header>
-        <h1>EcoCart</h1>
-        <p>Eco-Friendly & Sustainable Products for a Better Tomorrow</p> 
-    </header>
-    <div class="container">
-        <div class="product-card">
-            <img src="C:\Users\chand\Downloads\WhatsApp Image 2025-06-06 at 09.05.58_f5ea8214.jpg" alt="Eco Bag">
-            <div class="product-info">
-              <h3>Reusable Cotton Bag</h3>
-              <p>Made from 100% organic cotton, this bag is perfect for grocery shopping or everyday use.</p>
-              <button>Add to Cart</button>
-            </div>
-          </div>
-          <div class="product-card">
-            <img src="C:\Users\chand\Downloads\WhatsApp Image 2025-06-06 at 09.05.58_f7ee1f8a.jpg" alt="Bamboo Toothbrush">
-            <div class="product-info">
-              <h3>Bamboo Toothbrush</h3>
-              <p>Biodegradable toothbrush made from natural bamboo and BPA-free bristles.</p>
-              <button>Add to Cart</button>
-            </div>
-          </div>
-      
-          <div class="product-card">
-            <img src="C:\Users\chand\Downloads\WhatsApp Image 2025-06-06 at 09.05.59_88ec175b.jpg" alt="Coconut Bowl">
-            <div class="product-info">
-              <h3>Coconut Shell Bowl</h3>
-              <p>Handcrafted bowl made from real coconut shells, ideal for salads and smoothies.</p>
-              <button>Add to Cart</button>
-            </div>
-          </div>
-      
-          <div class="product-card">
-            <img src="C:\Users\chand\Downloads\WhatsApp Image 2025-06-06 at 09.05.59_da2dd964.jpg" alt="Eco Toys">
-            <div class="product-info">
-              <h3>Eco-Friendly Toys</h3>
-              <p>Sustainable toys made from recycled wood and non-toxic paint for kids.</p>
-              <button>Add to Cart</button>
-            </div>
-          </div>
-      
-          <div class="product-card">
-            <img src="C:\Users\chand\Downloads\WhatsApp Image 2025-06-06 at 09.05.59_6c823bf7.jpg" alt="Jute Pouch">
-            <div class="product-info">
-              <h3>Jute Pouch</h3>
-              <p>Stylish biodegradable pouches made from jute fiber – great for storing or gifting.</p>
-              <button>Add to Cart</button>
-            </div>
-          </div>
-      
+      <header>
+    <h1>EcoCart</h1>
+    <p>Sustainable Products</p>
+    <div class="cart-icon" onclick="toggleCart()">🛒 Cart<span class="cart-count">(0)</span></div>
+  </header>
+  <div class="container" id="productList">
+    <!-- Product cards will be injected by JS -->
+  </div>
+  <div class="cart-modal" id="cartModal">
+    <div class="cart-modal-content">
+      <h2>Your Cart</h2>
+      <div id="cartItems"></div>
+      <button onclick="toggleCart()">Close</button>
     </div>
-    
-    <footer>
-        &copy; 2025 EcoCart. All rights reserved. 🌱
-    </footer>
+  </div>
+  <footer>
+    &copy; 2025 EcoCart. All rights reserved.
+  </footer>
+  <script>
+    const products = [
+      { id: 1, name: "Reusable Cotton Bag", desc: "Organic cotton shopping bag.", image: "C:\Users\chand\Downloads\WhatsApp Image 2025-06-06 at 09.05.58_f5ea8214.jpg" },
+      { id: 2, name: "Bamboo Toothbrush", desc: "Biodegradable bamboo toothbrush.", image: "C:\Users\chand\Downloads\WhatsApp Image 2025-06-06 at 09.05.58_f7ee1f8a.jpg" },
+      { id: 3, name: "Coconut Bowl", desc: "Handcrafted coconut bowl.", image: "C:\Users\chand\Downloads\WhatsApp Image 2025-06-06 at 09.05.59_88ec175b.jpg"" },
+      { id: 4, name: "Eco Toys", desc: "Wooden toys for kids.", image: "C:\Users\chand\Downloads\WhatsApp Image 2025-06-06 at 09.05.59_da2dd964.jpg" },
+      { id: 5, name: "Jute Pouch", desc: "Eco-friendly jute pouches.", image: WhatsApp Image 2025-06-06 at 09.05.59_6c823bf7 }
+    ];let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+function renderProducts() {
+  const productList = document.getElementById("productList");
+  productList.innerHTML = products.map(p => `
+    <div class="product-card">
+      <img src="${p.image}" alt="${p.name}" />
+      <div class="product-info">
+        <h3>${p.name}</h3>
+        <p>${p.desc}</p>
+        <button onclick="addToCart(${p.id})">Add to Cart</button>
+      </div>
+    </div>`).join("");
+}
+
+function addToCart(id) {
+  const index = cart.findIndex(item => item.id === id);
+  if (index > -1) cart[index].qty++;
+  else cart.push({ id, qty: 1 });
+  updateCart();
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(item => item.id !== id);
+  updateCart();
+}
+
+function updateCart() {
+  localStorage.setItem('cart', JSON.stringify(cart));
+  document.querySelector('.cart-count').textContent = (${cart.reduce((a, b) => a + b.qty, 0)});
+  const cartItems = document.getElementById("cartItems");
+  cartItems.innerHTML = cart.map(item => {
+    const product = products.find(p => p.id === item.id);
+    return `<div class="cart-item">
+      <span>${product.name} (x${item.qty})</span>
+      <button onclick="removeFromCart(${item.id})">Remove</button>
+    </div>`;
+  }).join("") || '<p>Your cart is empty.</p>';
+}
+
+function toggleCart() {
+  const modal = document.getElementById("cartModal");
+  modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+}
+
+// Init
+renderProducts();
+updateCart();
+
+  </script>
 </body>
 </html>
