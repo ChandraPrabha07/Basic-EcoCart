@@ -1,205 +1,212 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>EcoCart with Shopping Cart</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>EcoCart - Sustainable Products</title>
   <style>
-    :root {
-      --bg: #f0f8f5;
-      --card-bg: #fff;
-      --text: #333;
-      --header: #2e7d32;
-      --footer: #e0f2f1;
-      --accent: #66bb6a;
-    }
-    body.dark {
-      --bg: #1b1f1c;
-      --card-bg: #2e2e2e;
-      --text: #e0e0e0;
-      --header: #1b5e20;
-      --footer: #2c3e3c;
-      --accent: #81c784;
-    }
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      background-color: var(--bg);
-      color: var(--text);
-      transition: background 0.3s, color 0.3s;
+      background: #f4f9f4;
+      color: #222;
     }
     header {
-      background-color: var(--header);
-      color: white;
-      padding: 1.5rem;
+      background: #388e3c;
+      color: #fff;
+      padding: 1.5rem 0;
       text-align: center;
-      position: relative;
-    }
-    .cart-icon {
-      position: absolute;
-      top: 1rem;
-      right: 6rem;
-      background: white;
-      color: var(--header);
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      cursor: pointer;
-    }
-    .cart-count {
-      font-weight: bold;
-      margin-left: 0.5rem;
+      letter-spacing: 2px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
     .container {
-      padding: 2rem;
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    .products-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 2rem;
     }
     .product-card {
-      background: var(--card-bg);
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(56,142,60,0.08);
       overflow: hidden;
+      transition: transform 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .product-card:hover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 6px 24px rgba(56,142,60,0.15);
     }
     .product-card img {
       width: 100%;
-      height: 200px;
+      height: 180px;
       object-fit: cover;
+      background: #e8f5e9;
     }
     .product-info {
       padding: 1rem;
-    }
-    .product-info h3 {
-      margin-top: 0;
-      color: var(--header);
-    }
-    .product-info p {
-      font-size: 0.95rem;
-    }
-    .product-info button {
-      margin-top: 0.5rem;
-      padding: 0.5rem 1rem;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .cart-modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      justify-content: center;
-      align-items: center;
-    }
-    .cart-modal-content {
-      background: var(--card-bg);
-      padding: 2rem;
-      border-radius: 10px;
-      width: 400px;
-      max-height: 80vh;
-      overflow-y: auto;
-    }
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 1rem;
-    }
-    .cart-item span {
+      text-align: center;
       flex: 1;
     }
-    .cart-item button {
-      background: red;
-      color: white;
+    .product-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin: 0.5rem 0;
+      color: #388e3c;
+    }
+    .product-desc {
+      font-size: 0.95rem;
+      color: #555;
+      margin-bottom: 0.8rem;
+    }
+    .product-price {
+      font-size: 1.1rem;
+      color: #2e7d32;
+      font-weight: bold;
+      margin-bottom: 0.8rem;
+    }
+    .add-cart-btn {
+      background: #66bb6a;
+      color: #fff;
       border: none;
-      padding: 0.3rem 0.6rem;
-      border-radius: 5px;
+      border-radius: 8px;
+      padding: 0.5rem 1.2rem;
+      font-size: 1rem;
       cursor: pointer;
+      transition: background 0.2s;
+    }
+    .add-cart-btn:hover {
+      background: #388e3c;
     }
     footer {
+      background: #e8f5e9;
       text-align: center;
-      padding: 1rem;
-      background: var(--footer);
+      padding: 1rem 0;
+      color: #388e3c;
+      margin-top: 2rem;
+      font-size: 1rem;
     }
   </style>
 </head>
 <body>
   <header>
     <h1>EcoCart</h1>
-    <p>Sustainable Products</p>
-    <div class="cart-icon" onclick="toggleCart()">🛒 Cart<span class="cart-count">(0)</span></div>
+    <p>Your Sustainable Product Marketplace</p>
   </header>
-  <div class="container" id="productList">
-    <!-- Product cards will be injected by JS -->
-  </div>
-  <div class="cart-modal" id="cartModal">
-    <div class="cart-modal-content">
-      <h2>Your Cart</h2>
-      <div id="cartItems"></div>
-      <button onclick="toggleCart()">Close</button>
+  
+  <div class="container">
+    <div class="products-grid">
+      <!-- Product 1 -->
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Bamboo Toothbrush">
+        <div class="product-info">
+          <div class="product-title">Bamboo Toothbrush</div>
+          <div class="product-desc">Eco-friendly, biodegradable handle. Soft bristles for gentle cleaning.</div>
+          <div class="product-price">₹99</div>
+          <button class="add-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+      <!-- Product 2 -->
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="Reusable Cotton Bag">
+        <div class="product-info">
+          <div class="product-title">Reusable Cotton Bag</div>
+          <div class="product-desc">Strong, washable, and perfect for shopping trips.</div>
+          <div class="product-price">₹149</div>
+          <button class="add-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+      <!-- Product 3 -->
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80" alt="Stainless Steel Straw Set">
+        <div class="product-info">
+          <div class="product-title">Steel Straw Set</div>
+          <div class="product-desc">Set of 4 straws with cleaning brush, reusable and durable.</div>
+          <div class="product-price">₹199</div>
+          <button class="add-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+      <!-- Product 4 -->
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=400&q=80" alt="Organic Cotton T-Shirt">
+        <div class="product-info">
+          <div class="product-title">Organic Cotton T-Shirt</div>
+          <div class="product-desc">Soft, breathable, and made from 100% organic cotton.</div>
+          <div class="product-price">₹599</div>
+          <button class="add-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+      <!-- Product 5 -->
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" alt="Eco Soap Bar">
+        <div class="product-info">
+          <div class="product-title">Eco Soap Bar</div>
+          <div class="product-desc">Handmade, vegan, and free from plastic packaging.</div>
+          <div class="product-price">₹89</div>
+          <button class="add-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+      <!-- Product 6 -->
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=400&q=80" alt="Compostable Phone Case">
+        <div class="product-info">
+          <div class="product-title">Compostable Phone Case</div>
+          <div class="product-desc">Protects your phone and the planet. 100% compostable material.</div>
+          <div class="product-price">₹299</div>
+          <button class="add-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+      <!-- Product 7 -->
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80" alt="Recycled Paper Notebook">
+        <div class="product-info">
+          <div class="product-title">Recycled Paper Notebook</div>
+          <div class="product-desc">Made from 100% post-consumer recycled paper.</div>
+          <div class="product-price">₹79</div>
+          <button class="add-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+      <!-- Product 8 -->
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1465101178521-c1a9136a3c8d?auto=format&fit=crop&w=400&q=80" alt="Plantable Seed Pencils">
+        <div class="product-info">
+          <div class="product-title">Plantable Seed Pencils</div>
+          <div class="product-desc">Write, plant, and grow! Set of 5 eco-pencils with seeds.</div>
+          <div class="product-price">₹129</div>
+          <button class="add-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+      <!-- Product 9 -->
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1502741338009-cac2772e18bc?auto=format&fit=crop&w=400&q=80" alt="Solar Power Bank">
+        <div class="product-info">
+          <div class="product-title">Solar Power Bank</div>
+          <div class="product-desc">Charge your devices anywhere with solar energy.</div>
+          <div class="product-price">₹999</div>
+          <button class="add-cart-btn">Add to Cart</button>
+        </div>
+      </div>
+      <!-- Product 10 -->
+      <div class="product-card">
+        <img src="https://images.unsplash.com/photo-1506089676908-3592f7389d4d?auto=format&fit=crop&w=400&q=80" alt="Reusable Water Bottle">
+        <div class="product-info">
+          <div class="product-title">Reusable Water Bottle</div>
+          <div class="product-desc">Stainless steel, leak-proof, and keeps drinks cold for 24 hours.</div>
+          <div class="product-price">₹349</div>
+          <button class="add-cart-btn">Add to Cart</button>
+        </div>
+      </div>
     </div>
   </div>
+  
   <footer>
-    &copy; 2025 EcoCart. All rights reserved.
+    &copy; 2025 EcoCart | Made with <span style="color:#388e3c;">&#10084;</span> for a Greener Planet
   </footer>
-  <script>
-    const products = [
-      { id: 1, name: "Reusable Cotton Bag", desc: "Organic cotton shopping bag.", image: "images/cottonbag.jpg" },
-      { id: 2, name: "Bamboo Toothbrush", desc: "Biodegradable bamboo toothbrush.", image: "images/toothbrush.jpg" },
-      { id: 3, name: "Coconut Bowl", desc: "Handcrafted coconut bowl.", image: "images/bowl.jpg" },
-      { id: 4, name: "Eco Toys", desc: "Wooden toys for kids.", image: "images/toy.jpg" },
-      { id: 5, name: "Jute Pouch", desc: "Eco-friendly jute pouches.", image: images/jutepouch.jpg" }
-    ];let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-function renderProducts() {
-  const productList = document.getElementById("productList");
-  productList.innerHTML = products.map(p => `
-    <div class="product-card">
-      <img src="${p.image}" alt="${p.name}" />
-      <div class="product-info">
-        <h3>${p.name}</h3>
-        <p>${p.desc}</p>
-        <button onclick="addToCart(${p.id})">Add to Cart</button>
-      </div>
-    </div>`).join("");
-}
-
-function addToCart(id) {
-  const index = cart.findIndex(item => item.id === id);
-  if (index > -1) cart[index].qty++;
-  else cart.push({ id, qty: 1 });
-  updateCart();
-}
-
-function removeFromCart(id) {
-  cart = cart.filter(item => item.id !== id);
-  updateCart();
-}
-
-function updateCart() {
-  localStorage.setItem('cart', JSON.stringify(cart));
-  document.querySelector('.cart-count').textContent = (${cart.reduce((a, b) => a + b.qty, 0)});
-  const cartItems = document.getElementById("cartItems");
-  cartItems.innerHTML = cart.map(item => {
-    const product = products.find(p => p.id === item.id);
-    return `<div class="cart-item">
-      <span>${product.name} (x${item.qty})</span>
-      <button onclick="removeFromCart(${item.id})">Remove</button>
-    </div>`;
-  }).join("") || '<p>Your cart is empty.</p>';
-}
-
-function toggleCart() {
-  const modal = document.getElementById("cartModal");
-  modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
-}
-
-// Init
-renderProducts();
-updateCart();
-
-  </script>
 </body>
 </html>
