@@ -1,5 +1,4 @@
-<style>
-    :root {
+:root {
       --bg: #f0f8f5;
       --card-bg: #fff;
       --text: #333;
@@ -117,5 +116,4 @@
       text-align: center;
       padding: 1rem;
       background: var(--footer);
-    }
-  </style>
+}
